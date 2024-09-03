@@ -7,9 +7,9 @@ export default [
     languageOptions: {
       sourceType: "commonjs",
       globals: {
-        ...globals.browser,  // Include browser globals
-        ...globals.jest      // Add Jest globals for test files
-      }
+        ...globals.browser, // Include browser globals
+        ...globals.jest, // Add Jest globals for test files
+      },
     },
   },
   pluginJs.configs.recommended,

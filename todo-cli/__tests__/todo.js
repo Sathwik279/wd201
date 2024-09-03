@@ -47,7 +47,7 @@ describe("TodoList Test Suite", () => {
       dueDate: new Date().toISOString().split("T")[0],
     });
   });
-  test("creates and  adds a new Todo", () => {
+  test(" checks creating a new todo", () => {
     const todoItemsCount = all.length;
     add({
       title: "Test todo",
@@ -56,22 +56,22 @@ describe("TodoList Test Suite", () => {
     });
     expect(all.length).toBe(todoItemsCount + 1);
   });
-  test("should mark a todo as complete", () => {
+  test("marking a todo as completed", () => {
     expect(all[0].completed).toBe(false);
     markAsComplete(0);
     expect(all[0].completed).toBe(true);
   });
-  test("checks retrieval of overdue items", () => {
+  test("retrieval of overdue items", () => {
     const overdueDate = new Date(overdue()[0].dueDate).getTime();
     const today = new Date().getTime();
 
     // Check if the overdue date is less than today
     expect(overdueDate).toBeLessThan(today);
   });
-  test("checks retrieval of dueToday items", () => {
+  test("retrieval of due today items", () => {
     expect(dueToday()[0].dueDate).toBe(new Date().toISOString().split("T")[0]);
   });
-  test("checks retrieval of dueLater items", () => {
+  test("retrieval of due later items", () => {
     const dueLaterDate = new Date(dueLater()[0].dueDate).getTime();
     const today = new Date().getTime();
 
