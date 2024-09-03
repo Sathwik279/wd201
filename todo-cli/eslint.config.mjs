@@ -6,4 +6,4 @@ export default [
   {files: ["**/*.js"], languageOptions: {sourceType: "commonjs"}},
   {languageOptions: { globals: globals.browser }},
   pluginJs.configs.recommended,
-];
+];echo "npx lint-staged" >> .husky/pre-commit
