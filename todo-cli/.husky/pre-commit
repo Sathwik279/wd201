@@ -1,1 +1,1 @@
-npm test
+cd todo-cli && npm test

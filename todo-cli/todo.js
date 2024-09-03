@@ -44,7 +44,7 @@ const todoList = () => {
   const toDisplayableList = (list) => {
     // Format the To-Do list here, and return the output string
     // as per the format given above.
-    //map and join the values as a string and return it
+    //map and join the values as a string and return
     return list
       .map((item) => {
         return `[${item.completed ? "x" : " "}] ${item.title} ${item.dueDate !== new Date().toISOString().split("T")[0] ? item.dueDate : " "}`;
