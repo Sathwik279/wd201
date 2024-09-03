@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const todoList = () => {
     all = []
     const add = (todoItem) => {
@@ -9,7 +10,7 @@ const todoList = () => {
   
     const overdue = () => {
       // Write the date check condition here and return the array
-      // of overdue items accordingly.
+      // of overdue items accordingly
      return  all.filter((item)=>{
        const today =  new Date().toISOString().split("T")[0]
         if(item.dueDate<today){
