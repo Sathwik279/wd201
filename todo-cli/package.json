@@ -8,9 +8,9 @@
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "prepare": "husky"
   },
-  "lint-staged": {
-  "*.js": [
-    "eslint --config eslint.config.js",
+ "lint-staged": {
+  "/*.js": [
+    "eslint --fix",
     "prettier --write"
   ]
 }
