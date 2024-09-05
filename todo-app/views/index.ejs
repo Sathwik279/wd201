@@ -4,23 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="./css/styles.css" rel="stylesheet" />
-    <!-- as these public files are avaliable from public to anywhere u can simply access them using ./ -->
-
-    <!-- this ejs file is pulling the data from public folder and using it to render the application  -->
-    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>To-Do Manager</title>
   </head>
   <body>
-    <!-- Todo Home Page -->
-    <!-- we want to render the above content from a external file dynamically -->
+    <div class="grid grid-cols-6">
+        <div class="col-start-3 col-span-2">
+            <%- include('header.ejs')%>
+            <form action="">
+                <div class="flex gap-2 py-4">
+                    <div class="flex-auto">
+                        <input type="text" placeholder="What's next?" class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm" required/>
+                    </div>
+                    <div class="flex-auto">
+                        <input type="date" class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4"/>
+                    </div>
+                    <div class="flex-none">
+                        <button type="submit" class="bg-green-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">Add</button>
+                    </div>
+                </div>
+            </form>
 
-    <%- include('header.ejs')%>
-    <!-- this above line is also used to import any kind of js related attribute inside of ejs -->
-    <!-- basically it is rendering content from one ejs file into another ejs -->
-    <!-- this line looks for header.ejs and loads the content -->
-    <table>
-      <%- include('todos.ejs')%>
-    </table>
+            <table>
+              <%- include('todos.ejs')%>
+            </table>
+            <br>
+            <br>
+            <%- include('footer.ejs')%>
+        </div>
+    </div>
+   
+  
 
-    <%- include('footer.ejs')%>
+    
   </body>
 </html>

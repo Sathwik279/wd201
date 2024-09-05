@@ -40,31 +40,22 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", async (request, response) => {
   try {
    
-    const allTodos = await Todo.getTodos();
-
-   //Create a constant with some extra todos
-    const extraTodos = [
-      {
-        title: "Sample Todo 1",
-        dueDate: new Date(),
-        completed: false,
-      },
-      {
-        title: "Sample Todo 2",
-        dueDate: new Date(),
-        completed: false,
-      },
-    ];
-
-    const combinedTodos = [...allTodos, ...extraTodos];
+    // const allTodos = await Todo.getTodos();
+    const overdue = await Todo.overdue();
+    const dueToday = await Todo.dueToday();
+    const dueLater = await Todo.dueLater();
 
     if (request.accepts("html")) {
       response.render("index", {
-        combinedTodos,
+        overdue,
+        dueToday,
+        dueLater
       });
     } else {
       response.json({
-         combinedTodos,
+        overdue,
+        dueToday,
+        dueLater
       });
     }
   } catch (error) {
@@ -79,7 +70,7 @@ app.post("/todos", async (request, response) => {
   try {
     const todo = await Todo.addTodo({
       title: request.body.title,
-      dueDate: request,
+      dueDate: request.body.dueDate
     });
 
     return response.json(todo);

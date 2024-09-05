@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model,Op } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -19,6 +17,99 @@ module.exports = (sequelize, DataTypes) => {
     //instance method
     markAsCompleted(){
       return this.update({completed:true}) //here this is the Todo instance
+    }
+
+    displayableString() {
+      let today = new Date();
+      let checkbox = this.completed ? '[x]' : '[ ]';
+      return `${this.id}. ${checkbox} ${this.title} ${(this.dueDate===today.toISOString().split("T")[0])?'': this.dueDate}`.trim();
+    }
+    
+    static async overdue() {
+      let today = new Date();
+      // FILL IN HERE TO RETURN OVERDUE ITEMS
+      let  all = await Todo.findAll({
+          where:{
+            dueDate:{
+              [Op.lt]: today.toISOString().split("T")[0]
+            }
+          }
+        })
+        return all;
+    }
+
+    static async dueToday() {
+      let today = new Date();
+      // FILL IN HERE TO RETURN ITEMS DUE tODAY
+      let  all = await Todo.findAll({
+          where:{
+            dueDate:{
+              [Op.eq]: today.toISOString().split("T")[0]
+            }
+          }
+        })
+        return all
+    }
+
+    static async dueLater() {
+      let today = new Date();
+      // FILL IN HERE TO RETURN ITEMS DUE LATER
+      let  all = await Todo.findAll({
+          where:{
+            dueDate:{
+              [Op.gt]: today.toISOString().split("T")[0]
+            }
+          }
+        })
+        return all
+    }
+
+    static async showList() {
+      console.log('My Todo list \n');
+
+      console.log('Overdue');
+      // FILL IN HERE
+    //  const overdue = await Todo.findAll({
+    //     where:{
+    //       dueDate:{
+    //         [Op.lt]: today.toISOString().split("T")[0]
+    //       }
+    //     }
+    //   })
+    //  //overdue is a list of todo objects
+    //  const  overdueList = overdue.map((item)=>item.displayableString()).join("\n");
+      const overdue = await Todo.overdue();
+      const overdueList = overdue.map((item)=>item.displayableString()).join("\n");
+      console.log(overdueList);
+
+      console.log('\n');
+
+      console.log('Due Today');
+      // FILL IN HERE
+    //  const  duetoday = await Todo.findAll({
+    //     where:{
+    //       dueDate:{
+    //         [Op.eq]: today.toISOString().split("T")[0]
+    //       }
+    //     }
+    //   })
+      
+      const dueToday = await Todo.dueToday();
+      const dueTodayList = dueToday.map((item)=>item.displayableString()).join("\n");
+      console.log(dueTodayList);
+
+      console.log('Due Later');
+      // FILL IN HERE
+    //  const  duelater = await Todo.findAll({
+    //     where:{
+    //       dueDate:{
+    //         [Op.gt]: today.toISOString().split("T")[0]
+    //       }
+    //     }
+    //   })
+    const dueLater = await Todo.dueLater();
+    const dueLaterList = dueLater.map((item)=>item.displayableString()).join("\n");
+    console.log(dueLaterList);
     }
 
    async deleteTodo(id){

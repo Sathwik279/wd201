@@ -7,7 +7,7 @@ export default [
     "commonjs":true,
     "es2021":true,
     "node":true,
-    "jest":true;
+    "jest":true
   }},
   {languageOptions: { globals: globals.browser }},
   pluginJs.configs.recommended,
