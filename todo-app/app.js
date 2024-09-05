@@ -24,16 +24,52 @@ app.use(express.static(path.join(__dirname, "public")));
 //     return response.status(422).json(error);
 //   }
 // });
+// app.get("/", async (request, response) => {
+//   const allTodos = await Todo.getTodos();
+//   if (request.accepts("html")) {
+//     response.render("index", {
+//       allTodos,
+//     });
+//   } else {
+//     response.json({
+//       allTodos,
+//     });
+//   }
+// });
+
 app.get("/", async (request, response) => {
-  const allTodos = await Todo.getTodos();
-  if (request.accepts("html")) {
-    response.render("index", {
-      allTodos,
-    });
-  } else {
-    response.json({
-      allTodos,
-    });
+  try {
+   
+    const allTodos = await Todo.getTodos();
+
+   //Create a constant with some extra todos
+    const extraTodos = [
+      {
+        title: "Sample Todo 1",
+        dueDate: new Date(),
+        completed: false,
+      },
+      {
+        title: "Sample Todo 2",
+        dueDate: new Date(),
+        completed: false,
+      },
+    ];
+
+    const combinedTodos = [...allTodos, ...extraTodos];
+
+    if (request.accepts("html")) {
+      response.render("index", {
+        combinedTodos,
+      });
+    } else {
+      response.json({
+         combinedTodos,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Internal Server Error");
   }
 });
 
