@@ -20,6 +20,9 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "cheerio": "^1.0.0",
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.10.0",
     "ejs": "^3.1.10",
     "eslint": "^9.9.1",
     "express": "^4.19.2",

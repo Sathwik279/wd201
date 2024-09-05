@@ -4,8 +4,12 @@ const app = express();
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cookieParser = require('cookie-parser');
+const csurf = require('csurf');
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}))
+app.use(cookieParser("shh! some secret string"));
+app.use(csurf({cookie:true}))
 
 //app.METHOD(PATH,HANDLER)
 //or
@@ -50,7 +54,8 @@ app.get("/", async (request, response) => {
       response.render("index", {
         overdue,
         dueToday,
-        dueLater
+        dueLater,
+        csrfToken:request.csrfToken(),
       });
     } else {
       response.json({
