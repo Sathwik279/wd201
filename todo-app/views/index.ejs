@@ -1,24 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./css/styles.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./css/styles.css" rel="stylesheet" />
     <!-- as these public files are avaliable from public to anywhere u can simply access them using ./ -->
 
-     <!-- this ejs file is pulling the data from public folder and using it to render the application  -->
+    <!-- this ejs file is pulling the data from public folder and using it to render the application  -->
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Todo Home Page -->
-     <!-- we want to render the above content from a external file dynamically -->
+    <!-- we want to render the above content from a external file dynamically -->
 
-     <%- include('header.ejs')%>
-     <!-- this above line is also used to import any kind of js related attribute inside of ejs -->
-      <!-- basically it is rendering content from one ejs file into another ejs -->
-     <!-- this line looks for header.ejs and loads the content -->
+    <%- include('header.ejs')%>
+    <!-- this above line is also used to import any kind of js related attribute inside of ejs -->
+    <!-- basically it is rendering content from one ejs file into another ejs -->
+    <!-- this line looks for header.ejs and loads the content -->
+    <table>
       <%- include('todos.ejs')%>
+    </table>
 
-      <%- include('footer.ejs')%>
-</body>
+    <%- include('footer.ejs')%>
+  </body>
 </html>
