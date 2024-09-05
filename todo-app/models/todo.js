@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     markAsCompleted(){
       return this.update({completed:true}) //here this is the Todo instance
     }
+
    async deleteTodo(id){
     try {
       await this.destroy();
@@ -30,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       return false;
     }
      
+    }
+
+    static  getTodos(){
+      return this.findAll();
     }
   }
   Todo.init({
