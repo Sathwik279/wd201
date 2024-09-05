@@ -17,17 +17,8 @@
      <!-- this above line is also used to import any kind of js related attribute inside of ejs -->
       <!-- basically it is rendering content from one ejs file into another ejs -->
      <!-- this line looks for header.ejs and loads the content -->
-      <table>
-        
-        <% for(var i = 0;i<allTodos.length;i++){%>
-            <tr>
-                <td>
-                   <%= allTodos[i].title %>
+      <%- include('todos.ejs')%>
 
-                </td>
-            </tr>
-        <% } %>
-       
-      </table>
+      <%- include('footer.ejs')%>
 </body>
 </html>
