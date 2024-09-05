@@ -64,6 +64,7 @@ module.exports = (sequelize, DataTypes) => {
         return all
     }
 
+
     static async showList() {
       console.log('My Todo list \n');
 
@@ -112,17 +113,25 @@ module.exports = (sequelize, DataTypes) => {
     console.log(dueLaterList);
     }
 
-   async deleteTodo(id){
-    try {
-      await this.destroy();
-      const todo = await Todo.findByPk(this.id);
-      return todo === null;
-    } catch (error) {
-      // In case of error, return false
-      return false;
-    }
-     
-    }
+  //  async deleteTodo(id){
+  //     try {
+  //       await this.destroy();
+  //       const todo = await Todo.findByPk(this.id);
+  //       return todo === null;
+  //     } catch (error) {
+  //       // In case of error, return false
+  //       return false;
+  //     }
+  //   }
+
+  //this method is similar to the above method
+  static async remove(id){
+    return this.destroy({
+      where:{
+        id,
+      }
+    });
+  }
 
     static  getTodos(){
       return this.findAll();

@@ -96,16 +96,23 @@ app.put("/todos/:id/markAsCompleted", async (request, response) => {
 app.delete("/todos/:id", async (request, response) => {
   console.log("Delete a todo by ID:", request.params.id);
 
-  try {
-    const todo = await Todo.findByPk(request.params.id);
-    if (!todo) {
-      return response.status(404).send(false);
-    }
+  // try {
+  //   const todo = await Todo.findByPk(request.params.id);
+  //   if (!todo) {
+  //     return response.status(404).send(false);
+  //   }
 
-    const returnValue = await todo.deleteTodo();
-    return response.send(returnValue);
-  } catch (error) {
-    return response.status(422).send(false);
+  //   const returnValue = await todo.deleteTodo();
+  //   return response.send(returnValue);
+  // } catch (error) {
+  //   return response.status(422).send(false);
+  // }
+
+  try{
+    await Todo.remove(request.params.id);
+    return response.json({success: true});
+  }catch(error){
+    return response.status(422).json(error);
   }
 });
 
