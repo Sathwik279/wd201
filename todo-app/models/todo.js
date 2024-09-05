@@ -20,6 +20,17 @@ module.exports = (sequelize, DataTypes) => {
     markAsCompleted(){
       return this.update({completed:true}) //here this is the Todo instance
     }
+   async deleteTodo(id){
+    try {
+      await this.destroy();
+      const todo = await Todo.findByPk(this.id);
+      return todo === null;
+    } catch (error) {
+      // In case of error, return false
+      return false;
+    }
+     
+    }
   }
   Todo.init({
     title: DataTypes.STRING,

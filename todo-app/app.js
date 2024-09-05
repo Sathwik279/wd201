@@ -9,8 +9,15 @@ app.use(bodyParser.json());
 //or
 //app.METHOD(path,callback[,callback...])
 
-app.get("/todos", (request, response) => {
-  console.log("Todo list");
+app.get("/todos", async (request, response) => {
+  console.log("Fetching the Todo list");
+  try {
+    const todoList = await Todo.findAll();
+    return response.json(todoList);
+  } catch (error) {
+    cconsole.log(error);
+    return response.status(422).json(error);
+  }
 });
 
 app.post("/todos", async (request, response) => {
@@ -41,8 +48,20 @@ app.put("/todos/:id/markAsCompleted", async (request, response) => {
   }
 });
 
-app.delete("/todos/:id", (request, response) => {
+app.delete("/todos/:id", async (request, response) => {
   console.log("Delete a todo by ID:", request.params.id);
+  //find the todo by id
+  try {
+    const todo = await Todo.findByPk(request.params.id); //this method is also asynchronous
+    if (!todo) {
+      return response.status(404).send(false);;
+    }
+
+    const returnValue = await todo.deleteTodo(); //as the inside update method of sequelize is asynchronous so we have to use await
+    return response.send(returnValue);
+  } catch (error) {
+    return response.status(422).send(false);
+  }
 });
 
 module.exports = app;
