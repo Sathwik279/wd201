@@ -5,6 +5,7 @@ const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 const path = require("path");
 app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}))
 
 //app.METHOD(PATH,HANDLER)
 //or
@@ -73,7 +74,8 @@ app.post("/todos", async (request, response) => {
       dueDate: request.body.dueDate
     });
 
-    return response.json(todo);
+    // return response.json(todo); //initially
+    return response.redirect("/"); //now this is done using the form in the / endpoint
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
