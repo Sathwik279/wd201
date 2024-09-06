@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       return this.update({completed:true}) //here this is the Todo instance
     }
 
+    setCompletionStatus(isCompleted){
+      return this.update({completed:!isCompleted});
+    }
+
     displayableString() {
       let today = new Date();
       let checkbox = this.completed ? '[x]' : '[ ]';
@@ -32,7 +36,8 @@ module.exports = (sequelize, DataTypes) => {
           where:{
             dueDate:{
               [Op.lt]: today.toISOString().split("T")[0]
-            }
+            },
+            completed:false
           }
         })
         return all;
@@ -45,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
           where:{
             dueDate:{
               [Op.eq]: today.toISOString().split("T")[0]
-            }
+            },
+            completed:false
           }
         })
         return all
@@ -58,10 +64,20 @@ module.exports = (sequelize, DataTypes) => {
           where:{
             dueDate:{
               [Op.gt]: today.toISOString().split("T")[0]
-            }
+            },
+            completed:false
           }
         })
         return all
+    }
+
+    static async completed(){
+      let all = await Todo.findAll({
+        where:{
+          completed:true
+        }
+      })
+      return all;
     }
 
 
@@ -128,7 +144,7 @@ module.exports = (sequelize, DataTypes) => {
   static async remove(id){
     return this.destroy({
       where:{
-        id,
+        id:id,
       }
     });
   }

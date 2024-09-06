@@ -5,11 +5,11 @@ const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 const path = require("path");
 const cookieParser = require('cookie-parser');
-const csurf = require('csurf');
+const csrf = require('tiny-csrf');
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser("shh! some secret string"));
-app.use(csurf({cookie:true}))
+app.use(csrf("this_should_be_32_character_long",["POST","PUT","DELETE"]))
 
 //app.METHOD(PATH,HANDLER)
 //or
@@ -49,19 +49,22 @@ app.get("/", async (request, response) => {
     const overdue = await Todo.overdue();
     const dueToday = await Todo.dueToday();
     const dueLater = await Todo.dueLater();
+    const completed = await Todo.completed();
 
     if (request.accepts("html")) {
       response.render("index", {
         overdue,
         dueToday,
         dueLater,
+        completed,
         csrfToken:request.csrfToken(),
       });
     } else {
       response.json({
         overdue,
         dueToday,
-        dueLater
+        dueLater,
+        completed
       });
     }
   } catch (error) {
@@ -87,12 +90,15 @@ app.post("/todos", async (request, response) => {
   }
 });
 
-app.put("/todos/:id/markAsCompleted", async (request, response) => {
+app.put("/todos/:id", async (request, response) => {
   console.log("we have to update a todo with ID:", request.params.id); //
   const todo = await Todo.findByPk(request.params.id);
   try {
-    const updatedTodo = await todo.markAsCompleted();
-    return response.json(updatedTodo);
+    if(request.body.completed==='updateCompleted'){
+      const updatedTodo = await todo.setCompletionStatus(todo.completed);
+      return response.json(updatedTodo);
+    }
+    
   } catch (error) {
     return response.status(422).json(error);
   }
@@ -114,7 +120,15 @@ app.delete("/todos/:id", async (request, response) => {
   // }
 
   try{
+    console.log('before todo')
+    const todo = await Todo.findByPk(request.params.id);
+    console.log('after todo')
+    if (!todo) {
+      return res.status(404).json({ success: false, message: "Todo not found" });
+    }
+
     await Todo.remove(request.params.id);
+    console.log(({success:true}))
     return response.json({success: true});
   }catch(error){
     return response.status(422).json(error);
