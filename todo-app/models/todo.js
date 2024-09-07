@@ -8,10 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Todo.belongsTo(models.User,{
+        foreignKey:'userId'
+      })
       // define association here
     }
-    static addTodo({title,dueDate}){
-      return this.create({title:title,dueDate:dueDate,completed:false})
+    static addTodo({title,dueDate,userId}){
+      return this.create({title:title,dueDate:dueDate,completed:false,userId})
     }
 
     //instance method
@@ -29,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       return `${this.id}. ${checkbox} ${this.title} ${(this.dueDate===today.toISOString().split("T")[0])?'': this.dueDate}`.trim();
     }
     
-    static async overdue() {
+    static async overdue(userId) {
       let today = new Date();
       // FILL IN HERE TO RETURN OVERDUE ITEMS
       let  all = await Todo.findAll({
@@ -37,13 +40,14 @@ module.exports = (sequelize, DataTypes) => {
             dueDate:{
               [Op.lt]: today.toISOString().split("T")[0]
             },
+            userId,
             completed:false
           }
         })
         return all;
     }
 
-    static async dueToday() {
+    static async dueToday(userId) {
       let today = new Date();
       // FILL IN HERE TO RETURN ITEMS DUE tODAY
       let  all = await Todo.findAll({
@@ -51,13 +55,14 @@ module.exports = (sequelize, DataTypes) => {
             dueDate:{
               [Op.eq]: today.toISOString().split("T")[0]
             },
+            userId,
             completed:false
           }
         })
         return all
     }
 
-    static async dueLater() {
+    static async dueLater(userId) {
       let today = new Date();
       // FILL IN HERE TO RETURN ITEMS DUE LATER
       let  all = await Todo.findAll({
@@ -65,16 +70,18 @@ module.exports = (sequelize, DataTypes) => {
             dueDate:{
               [Op.gt]: today.toISOString().split("T")[0]
             },
+            userId,
             completed:false
           }
         })
         return all
     }
 
-    static async completed(){
+    static async completed(userId){
       let all = await Todo.findAll({
         where:{
-          completed:true
+          completed:true,
+          userId
         }
       })
       return all;
@@ -141,10 +148,11 @@ module.exports = (sequelize, DataTypes) => {
   //   }
 
   //this method is similar to the above method
-  static async remove(id){
+  static async remove(id,userId){
     return this.destroy({
       where:{
         id:id,
+        userId
       }
     });
   }
