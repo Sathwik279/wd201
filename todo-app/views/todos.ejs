@@ -7,8 +7,8 @@
     <link href="./css/styles.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand&display=swap');
-      </style>
+      @import url("https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand&display=swap");
+    </style>
     <title>To-Do Manager</title>
     <script>
       var token = document
@@ -20,7 +20,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             _csrf: token,
-            completed:"updateCompleted"
+            completed: "updateCompleted",
           }),
         })
           .then((res) => {
