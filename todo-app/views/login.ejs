@@ -15,7 +15,7 @@
     <div class="grid grid-cols-6">
       <div class="col-start-3 col-span-2">
         <%-include('header.ejs')%>
-        <h6 class="py-4">Signup as a new user</h6>
+        <h6 class="py-4">Login </h6>
         <form action="/session" method="post">
           <input type="hidden" name="_csrf" value="<%=csrfToken%>" />
 
@@ -42,6 +42,11 @@
             Sign in
           </button>
         </form>
+        <% if(messages && messages.error && messages.error.length > 0)  { %>
+          <% for(var i=0; i<messages.error.length; i++) { %>
+                  <li> <%= messages.error[i] %></li>
+          <% } %>
+        <% } %>
       </div>
     </div>
   </body>

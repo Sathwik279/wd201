@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 
     //instance method
     markAsCompleted() {
-      return this.update({ completed: true }); //here this is the Todo instance
+      return this.update({ completed: true });
     }
 
     setCompletionStatus(isCompleted) {
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static async overdue(userId) {
       let today = new Date();
-      // FILL IN HERE TO RETURN OVERDUE ITEMS
+
       let all = await Todo.findAll({
         where: {
           dueDate: {
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static async dueToday(userId) {
       let today = new Date();
-      // FILL IN HERE TO RETURN ITEMS DUE tODAY
+
       let all = await Todo.findAll({
         where: {
           dueDate: {
@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static async dueLater(userId) {
       let today = new Date();
-      // FILL IN HERE TO RETURN ITEMS DUE LATER
+
       let all = await Todo.findAll({
         where: {
           dueDate: {
@@ -96,16 +96,7 @@ module.exports = (sequelize, DataTypes) => {
       console.log("My Todo list \n");
 
       console.log("Overdue");
-      // FILL IN HERE
-      //  const overdue = await Todo.findAll({
-      //     where:{
-      //       dueDate:{
-      //         [Op.lt]: today.toISOString().split("T")[0]
-      //       }
-      //     }
-      //   })
-      //  //overdue is a list of todo objects
-      //  const  overdueList = overdue.map((item)=>item.displayableString()).join("\n");
+
       const overdue = await Todo.overdue();
       const overdueList = overdue
         .map((item) => item.displayableString())
@@ -115,14 +106,6 @@ module.exports = (sequelize, DataTypes) => {
       console.log("\n");
 
       console.log("Due Today");
-      // FILL IN HERE
-      //  const  duetoday = await Todo.findAll({
-      //     where:{
-      //       dueDate:{
-      //         [Op.eq]: today.toISOString().split("T")[0]
-      //       }
-      //     }
-      //   })
 
       const dueToday = await Todo.dueToday();
       const dueTodayList = dueToday
@@ -131,31 +114,13 @@ module.exports = (sequelize, DataTypes) => {
       console.log(dueTodayList);
 
       console.log("Due Later");
-      // FILL IN HERE
-      //  const  duelater = await Todo.findAll({
-      //     where:{
-      //       dueDate:{
-      //         [Op.gt]: today.toISOString().split("T")[0]
-      //       }
-      //     }
-      //   })
+
       const dueLater = await Todo.dueLater();
       const dueLaterList = dueLater
         .map((item) => item.displayableString())
         .join("\n");
       console.log(dueLaterList);
     }
-
-    //  async deleteTodo(id){
-    //     try {
-    //       await this.destroy();
-    //       const todo = await Todo.findByPk(this.id);
-    //       return todo === null;
-    //     } catch (error) {
-    //       // In case of error, return false
-    //       return false;
-    //     }
-    //   }
 
     //this method is similar to the above method
     static async remove(id, userId) {
@@ -173,9 +138,21 @@ module.exports = (sequelize, DataTypes) => {
   }
   Todo.init(
     {
-      title: DataTypes.STRING,
-      dueDate: DataTypes.DATEONLY,
-      completed: DataTypes.BOOLEAN,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Title cannot be empty" },
+        },
+      },
+      dueDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Due date cannot be empty" },
+        },
+      },
+      completed: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       sequelize,

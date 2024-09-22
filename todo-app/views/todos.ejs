@@ -5,15 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="<%=csrfToken%>" />
     <link href="./css/styles.css" rel="stylesheet" />
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand&display=swap");
     </style>
+
     <title>To-Do Manager</title>
+
     <script>
       var token = document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content");
+
       function updateTodo(id) {
         fetch(`/todos/${id}`, {
           method: "put",
@@ -30,6 +35,7 @@
           })
           .catch((err) => console.erro(err));
       }
+
       function deleteTodo(id) {
         fetch(`/todos/${id}`, {
           method: "delete",
@@ -61,7 +67,6 @@
                 name="title"
                 placeholder="What's next?"
                 class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm"
-                required
               />
             </div>
             <div class="flex-auto">
@@ -69,7 +74,6 @@
                 type="date"
                 name="dueDate"
                 class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4"
-                required
               />
             </div>
             <div class="flex-none">
@@ -82,11 +86,16 @@
             </div>
           </div>
         </form>
-
+        <% if(messages && messages.error && messages.error.length > 0)  { %>
+          <% for(var i=0; i<messages.error.length; i++) { %>
+                  <li> <%= messages.error[i] %></li>
+          <% } %>
+        <% } %>
         <table>
           <%- include('todo.ejs')%>
         </table>
         <br />
+
         <br />
         <%- include('footer.ejs')%>
       </div>
