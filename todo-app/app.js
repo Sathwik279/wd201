@@ -207,8 +207,8 @@ app.put(
     try {
       if (request.body.completed === "updateCompleted") {
         const updatedTodo = await todo.setCompletionStatus(todo.completed);
-        // response.redirect("/todos");
-        return response.json(updatedTodo);
+        response.redirect("/todos");
+        // return response.json(updatedTodo);
       }
     } catch (error) {
       return response.status(422).json(error);
