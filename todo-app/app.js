@@ -82,9 +82,6 @@ passport.deserializeUser((id, done) => {
 });
 
 app.get("/", async (request, response) => {
-  if (request.isAuthenticated()) {
-    return response.redirect("/todos");
-  }
   response.render("index", {
     title: "Todo application",
     csrfToken: request.csrfToken(),
@@ -210,6 +207,7 @@ app.put(
     try {
       if (request.body.completed === "updateCompleted") {
         const updatedTodo = await todo.setCompletionStatus(todo.completed);
+        // response.redirect("/todos");
         return response.json(updatedTodo);
       }
     } catch (error) {
