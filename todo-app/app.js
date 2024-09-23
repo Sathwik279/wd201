@@ -84,11 +84,12 @@ passport.deserializeUser((id, done) => {
 app.get("/", async (request, response) => {
   if (request.isAuthenticated()) {
     return response.redirect("/todos");
+  } else {
+    response.render("index", {
+      title: "Todo application",
+      csrfToken: request.csrfToken(),
+    });
   }
-  response.render("index", {
-    title: "Todo application",
-    csrfToken: request.csrfToken(),
-  });
 });
 
 app.get(
@@ -182,21 +183,20 @@ app.post(
   "/todos",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
+    console.log("Creating a todo", request.body);
+    console.log(request.user);
+    // Todo
     try {
       await Todo.addTodo({
         title: request.body.title,
         dueDate: request.body.dueDate,
         userId: request.user.id,
       });
-      request.flash("success", "Todo created successfully!");
-      return response.redirect("/todos");
+      // return response.json(todo); //initially
+      return response.redirect("/todos"); //now this is done using the form in the / endpoint
     } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        error.errors.forEach((err) => {
-          request.flash("error", err.message);
-          return response.redirect("/todos");
-        });
-      }
+      console.log(error);
+      return response.status(422).json(error);
     }
   }
 );
@@ -210,8 +210,7 @@ app.put(
     try {
       if (request.body.completed === "updateCompleted") {
         const updatedTodo = await todo.setCompletionStatus(todo.completed);
-        response.redirect("/todos");
-        // return response.json(updatedTodo);
+        return response.json(updatedTodo);
       }
     } catch (error) {
       return response.status(422).json(error);
